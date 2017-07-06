@@ -23,6 +23,8 @@ public abstract class Packet implements IPacket {
 	}
 
 	public final Packet write() {
+		bc.writeString("-VAL0DD-");
+		bc.writeInt(getPacketID().getID());
 		writePacket(bc);
 		return this;
 	}

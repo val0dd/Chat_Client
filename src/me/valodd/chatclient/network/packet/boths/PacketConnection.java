@@ -2,6 +2,7 @@ package me.valodd.chatclient.network.packet.boths;
 
 import me.valodd.chatclient.network.BufferConnection;
 import me.valodd.chatclient.network.Packet;
+import me.valodd.chatclient.network.packet.PACKETS;
 
 public class PacketConnection extends Packet {
 	private String username;
@@ -22,6 +23,11 @@ public class PacketConnection extends Packet {
 	@Override
 	public void writePacket(BufferConnection bc) {
 		bc.writeString(username);
+	}
+
+	@Override
+	public PACKETS getPacketID() {
+		return PACKETS.PACKETCONNECTION;
 	}
 
 	public void setUsername(String username) {

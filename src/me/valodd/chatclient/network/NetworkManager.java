@@ -7,6 +7,7 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+import me.valodd.chatclient.network.packet.PACKETS;
 import me.valodd.chatclient.network.packet.boths.PacketConnection;
 
 public class NetworkManager {
@@ -63,8 +64,9 @@ public class NetworkManager {
 	protected void onPacketReceive(BufferConnection bc) {
 		if (!"-VAL0DD-".equalsIgnoreCase(bc.readString())) {
 			int packetID = bc.readInt();
-			switch (packetID) {
-			case 1: // PacketConnection
+			PACKETS packetsID = PACKETS.getByID(packetID);
+			switch (packetsID) {
+			case PACKETCONNECTION: // PacketConnection
 				PacketConnection packet = new PacketConnection();
 				packet.read();
 

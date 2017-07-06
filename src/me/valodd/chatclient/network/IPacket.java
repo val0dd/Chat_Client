@@ -1,5 +1,7 @@
 package me.valodd.chatclient.network;
 
+import me.valodd.chatclient.network.packet.PACKETS;
+
 /**
  * This interface is used for all Packet types.<br />
  * <br />
@@ -25,4 +27,11 @@ public interface IPacket {
 	 *            Specific packet
 	 */
 	void writePacket(BufferConnection bc);
+
+	/**
+	 * get Packet ID
+	 * 
+	 * @return Specific Packets ID
+	 */
+	PACKETS getPacketID();
 }
