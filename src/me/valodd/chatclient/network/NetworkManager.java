@@ -34,8 +34,10 @@ public class NetworkManager {
 		}
 	}
 
-	public void joinServer() {
-
+	public void joinServer(String username) {
+		PacketConnection pc = new PacketConnection();
+		pc.setUsername(username);
+		sendPacket(pc);
 	}
 
 	public void disconnect() {
@@ -49,7 +51,9 @@ public class NetworkManager {
 	}
 
 	public void sendPacket(Packet packet) {
-		_sendPacket(packet.write().getBufferConnection());
+		packet.write();
+		_sendPacket(new BufferConnection(packet.getBufferConnection().getSizeBuff() + 4)
+				.writeInt(packet.getBufferConnection().getSizeBuff()).writeBytes(packet.getBufferConnection()));
 	}
 
 	private void _sendPacket(BufferConnection bc) {
@@ -62,14 +66,17 @@ public class NetworkManager {
 	}
 
 	protected void onPacketReceive(BufferConnection bc) {
-		if (!"-VAL0DD-".equalsIgnoreCase(bc.readString())) {
+		if ("-VAL0DD-".equalsIgnoreCase(bc.readString())) {
 			int packetID = bc.readInt();
 			PACKETS packetsID = PACKETS.getByID(packetID);
 			switch (packetsID) {
 			case PACKETCONNECTION: // PacketConnection
 				PacketConnection packet = new PacketConnection();
-				packet.read();
-
+				packet.read(bc);
+				System.out.println("RESPONSE FROM SERVER:");
+				System.out.println("Username: " + packet.getUsername());
+				System.out.println("Number of Clients:" + packet.getNbClients());
+				System.out.println("Clients: " + packet.getClients());
 				break;
 			default:
 				break;

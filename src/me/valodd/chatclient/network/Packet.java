@@ -17,7 +17,8 @@ public abstract class Packet implements IPacket {
 		bc = new BufferConnection(32);
 	}
 
-	public final Packet read() {
+	public final Packet read(BufferConnection bc) {
+		this.bc = bc;
 		readPacket(bc);
 		return this;
 	}
