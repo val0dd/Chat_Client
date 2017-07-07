@@ -3,51 +3,22 @@ package me.valodd.chatclient.network;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.net.InetAddress;
 import java.net.Socket;
-import java.net.UnknownHostException;
 
 import me.valodd.chatclient.network.packet.PACKETS;
 import me.valodd.chatclient.network.packet.boths.PacketConnection;
+import me.valodd.chatclient.server.Server;
+import me.valodd.chatclient.server.ServerManager;
 
-public class NetworkManager {
-	private InetAddress inetAddress;
-	private int port;
+public class NetworkServer {
+	private Server s;
 	private Socket socket;
 	private Thread threadPacketListener;
 	private boolean end = false;
 
-	public NetworkManager(InetAddress ia, int port) {
-		this.inetAddress = ia;
-		this.port = port;
-		connect();
-	}
-
-	public void connect() {
-		try {
-			socket = new Socket(inetAddress.getHostAddress(), port);
-			startInputListening();
-		} catch (UnknownHostException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	public void joinServer(String username) {
-		PacketConnection pc = new PacketConnection();
-		pc.setUsername(username);
-		sendPacket(pc);
-	}
-
-	public void disconnect() {
-		try {
-			end = true;
-			threadPacketListener.interrupt();
-			socket.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+	public NetworkServer(Socket socket) {
+		this.socket = socket;
+		startInputListening();
 	}
 
 	public void sendPacket(Packet packet) {
@@ -71,17 +42,24 @@ public class NetworkManager {
 			PACKETS packetsID = PACKETS.getByID(packetID);
 			switch (packetsID) {
 			case PACKETCONNECTION: // PacketConnection
-				PacketConnection packet = new PacketConnection();
+				PacketConnection packet = new PacketConnection(s);
 				packet.read(bc);
-				System.out.println("RESPONSE FROM SERVER:");
-				System.out.println("Username: " + packet.getUsername());
-				System.out.println("Number of Clients:" + packet.getNbClients());
-				System.out.println("Clients: " + packet.getClients());
+				packet.executePacket();
 				break;
 			default:
 				break;
 			}
 		}
+	}
+
+	private void stop() {
+		end = true;
+		try {
+			socket.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		ServerManager.removeServer(getServer());
 	}
 
 	private void startInputListening() {
@@ -106,12 +84,21 @@ public class NetworkManager {
 								}
 							}).start();
 						}
-					} catch (IOException e) {
+					} catch (IOException e) { // DISCONNECTED
+						stop();
 						e.printStackTrace();
 					}
 				}
 			}
 		});
 		threadPacketListener.start();
+	}
+
+	public void setServer(Server s) {
+		this.s = s;
+	}
+
+	public Server getServer() {
+		return s;
 	}
 }
