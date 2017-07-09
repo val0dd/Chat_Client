@@ -24,6 +24,7 @@ public class GUIAbout extends JDialog {
 	public GUIAbout() {
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
+		setResizable(false);
 		getContentPane().setLayout(new BorderLayout());
 
 		// PANNEL CENTER

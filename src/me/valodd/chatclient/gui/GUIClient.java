@@ -8,7 +8,6 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
@@ -58,17 +57,16 @@ public class GUIClient extends JFrame implements ActionListener {
 
 		// MENU ITEM CONNECT
 		mntmConnect = new JMenuItem("Connect");
-		mntmConnect.setHorizontalAlignment(SwingConstants.LEFT);
-		mntmConnect.setActionCommand("connect");
+		mntmConnect.setActionCommand("CONNECT");
 		mntmConnect.addActionListener(this);
 
 		// MENU ITEM DISCONNECT
 		mntmDisconnect = new JMenuItem("Disconnect");
-		mntmDisconnect.setHorizontalAlignment(SwingConstants.LEFT);
-		mntmDisconnect.setActionCommand("disconnect");
+		mntmDisconnect.setActionCommand("DISCONNECT");
 		mntmDisconnect.addActionListener(this);
 
 		mntmQuit = new JMenuItem("Quit");
+		mntmQuit.setActionCommand("QUIT");
 		mntmQuit.addActionListener(this);
 
 		// ---------- MENU HELP ----------
@@ -97,14 +95,17 @@ public class GUIClient extends JFrame implements ActionListener {
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent ae) {
-		String action = ae.getActionCommand();
+	public void actionPerformed(ActionEvent e) {
+		String action = e.getActionCommand();
 		if (action == null)
 			return;
-		if ("connect".equalsIgnoreCase(action)) {
-
-		} else if ("disconnect".equalsIgnoreCase(action)) {
-
+		if ("CONNECT".equalsIgnoreCase(action)) {
+			GUIManager.showGUIConnect();
+		} else if ("DISCONNECT".equalsIgnoreCase(action)) {
+			// TODO DISCONNECT
+		} else if ("QUIT".equalsIgnoreCase(action)) {
+			// TODO DISCONNECT
+			System.exit(0);
 		} else if ("about".equalsIgnoreCase(action)) {
 			GUIManager.showGUIAbout();
 		}
