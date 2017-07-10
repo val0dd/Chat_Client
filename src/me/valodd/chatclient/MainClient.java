@@ -8,5 +8,5 @@ public class MainClient {
 		// TODO Auto-generated method stub
 		GUIManager.showGUIClient();
 	}
-
+	
 }
