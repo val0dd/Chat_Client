@@ -30,12 +30,14 @@ public class PacketConnection extends Packet {
 
 	@Override
 	public void executePacket() {
-		getServer().setConnected(true);
-		getServer().setName(getUsername());
-		// TODO END HERE
+		if (!getServer().isConnected()) {
+			getServer().setConnected(true);
+			getServer().setName(getUsername());
+			// TODO END HERE
 
-		System.out.println("Number of Clients:" + getNbClients());
-		System.out.println("Clients: " + getClients());
+			System.out.println("Number of Clients:" + getNbClients());
+			System.out.println("Clients: " + getClients());
+		}
 
 	}
 

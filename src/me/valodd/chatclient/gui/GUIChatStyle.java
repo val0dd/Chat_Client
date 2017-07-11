@@ -7,7 +7,9 @@ public enum GUIChatStyle {
 	MESSAGE("MESSAGE", "sans-serif", 12, 100.0f, Color.BLACK, null, false, false),
 	SERVER("SERVER", "sans-serif", 12, 100.0f, Color.GREEN, null, true, true),
 	INFO("INFO", "sans-serif", 12, 100.0f, Color.YELLOW, null, false, false),
-	ERROR("ERROR", "sans-serif", 12, 100.0f, Color.RED, null, true, true);
+	ERROR("ERROR", "sans-serif", 12, 100.0f, Color.RED, null, true, true),
+	LOGIN("LOGIN", "sans-serif", 12, 100.0f, Color.GREEN, null, false, false),
+	LOGOUT("LOGOUT", "sans-serif", 12, 100.0f, Color.RED, null, false, false);
 
 	private String name;
 	private String fontFamily;
