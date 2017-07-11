@@ -1,12 +1,12 @@
 package me.valodd.chatclient;
 
-import me.valodd.chatclient.test.Test;
+import me.valodd.chatclient.gui.GUIManager;
 
 public class MainClient {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		new Test();
+		GUIManager.showGUIClient();
 	}
 
 }
