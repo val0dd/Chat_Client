@@ -4,7 +4,8 @@ import java.awt.Color;
 
 public enum GUIChatStyle {
 	USERNAME("USERNAME", "sans-serif", 12, 100.0f, Color.BLUE, null, true, true),
-	MESSAGE("MESSAGE", "sans-serif", 12, 100.0f, Color.BLACK, null, false, false);
+	MESSAGE("MESSAGE", "sans-serif", 12, 100.0f, Color.BLACK, null, false, false),
+	SERVER("SERVER", "sans-serif", 14, 100.0f, Color.GREEN, null, true, true);
 
 	private String name;
 	private String fontFamily;

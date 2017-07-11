@@ -56,6 +56,7 @@ public class GUIClient extends JFrame implements ActionListener {
 	public GUIClient() {
 		initialize();
 		setOutputStyles();
+		addText("Client Launched !", GUIChatStyle.SERVER, false);
 	}
 
 	private void setOutputStyles() {
@@ -97,14 +98,6 @@ public class GUIClient extends JFrame implements ActionListener {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		getContentPane().setLayout(new CardLayout(0, 0));
 
-		splitPane = new JSplitPane();
-		splitPane.setEnabled(false);
-		splitPane.setContinuousLayout(true);
-		splitPane.setOrientation(JSplitPane.VERTICAL_SPLIT);
-		// TODO CHANGE THE NEXT 2 LINES
-		// splitPane.setDividerLocation(0.7);
-		splitPane.setDividerLocation(450);
-
 		// PANNEL CHAT
 		panelChat = new JPanel();
 		panelChat.setLayout(new BorderLayout(0, 0));
@@ -131,12 +124,21 @@ public class GUIClient extends JFrame implements ActionListener {
 
 		jspChat = new JScrollPane(txtpnChat);
 
+		// SPLITPANE CHANNELS - INFO
+		splitPane = new JSplitPane();
+		splitPane.setEnabled(false);
+		splitPane.setContinuousLayout(true);
+		splitPane.setOrientation(JSplitPane.VERTICAL_SPLIT);
+		// TODO CHANGE THE NEXT 2 LINES
+		splitPane.setDividerLocation(0.7);
+		// splitPane.setDividerLocation(450);
+
 		// SPLITPANE CHAT - OTHER
 		splitPane_1 = new JSplitPane();
 		splitPane_1.setEnabled(false);
 		splitPane_1.setContinuousLayout(true);
 		// TODO CHANGE THE NEXT 2 LINES
-		// splitPane_1.setDividerLocation(0.7);
+		splitPane_1.setDividerLocation(0.7);
 		splitPane_1.setDividerLocation(450);
 
 		// EVENT ON WINDOWS RESIZED
@@ -272,10 +274,7 @@ public class GUIClient extends JFrame implements ActionListener {
 	}
 
 	private void sendMessage(String msg) {
-		if (msg.startsWith("msg:"))
-			addText(msg, GUIChatStyle.MESSAGE, true);
-		else
-			addText(msg, GUIChatStyle.USERNAME, true);
+		addText(msg, GUIChatStyle.SERVER, true);
 		// TODO CHECK IF USER CAN SEND CHAT MESSAGE AND SEND PACKET MESSAGE
 	}
 
