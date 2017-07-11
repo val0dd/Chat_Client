@@ -8,7 +8,6 @@ import java.net.Socket;
 import me.valodd.chatclient.network.packet.PACKETS;
 import me.valodd.chatclient.network.packet.boths.PacketConnection;
 import me.valodd.chatclient.server.Server;
-import me.valodd.chatclient.server.ServerManager;
 
 public class NetworkServer {
 	private Server s;
@@ -52,14 +51,13 @@ public class NetworkServer {
 		}
 	}
 
-	private void stop() {
+	public void stop() {
 		end = true;
 		try {
 			socket.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		ServerManager.removeServer(getServer());
 	}
 
 	private void startInputListening() {

@@ -283,10 +283,10 @@ public class GUIClient extends JFrame implements ActionListener {
 		try {
 			sdChat.insertString(sdChat.getLength(), String.format("%s%s", newLine, txt),
 					sdChat.getStyle(style.getName()));
-			if (isChatViewAtBottom() && isNewLine)
-				scrollToBottom();
 		} catch (BadLocationException ex) {
 			ex.printStackTrace();
 		}
+		if (isChatViewAtBottom() && isNewLine)
+			scrollToBottom();
 	}
 }

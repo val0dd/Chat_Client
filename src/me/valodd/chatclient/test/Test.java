@@ -16,7 +16,7 @@ public class Test {
 		try {
 			Server s = new Server(InetAddress.getByName("127.0.0.1"), 25565);
 			ServerManager.addServer(s);
-			s.connect("0ddlyoko");
+			s.connect("0ddlyoko", "");
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		}

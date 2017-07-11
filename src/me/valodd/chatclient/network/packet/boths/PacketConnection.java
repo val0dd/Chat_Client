@@ -7,6 +7,7 @@ import me.valodd.chatclient.server.Server;
 
 public class PacketConnection extends Packet {
 	private String username;
+	private String password;
 	private int nbClients;
 	private String clients;
 
@@ -24,12 +25,15 @@ public class PacketConnection extends Packet {
 	@Override
 	public void writePacket(BufferConnection bc) {
 		bc.writeString(username);
+		bc.writeString(password);
 	}
 
 	@Override
 	public void executePacket() {
-		System.out.println("RESPONSE FROM SERVER:");
-		System.out.println("Username: " + getUsername());
+		getServer().setConnected(true);
+		getServer().setName(getUsername());
+		// TODO END HERE
+
 		System.out.println("Number of Clients:" + getNbClients());
 		System.out.println("Clients: " + getClients());
 
@@ -47,6 +51,11 @@ public class PacketConnection extends Packet {
 
 	public String getUsername() {
 		return username;
+	}
+
+	public PacketConnection setPassword(String password) {
+		this.password = password;
+		return this;
 	}
 
 	public int getNbClients() {

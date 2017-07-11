@@ -12,19 +12,21 @@ public class Server {
 	private int port;
 	private NetworkServer ns;
 	private String name;
+	private boolean connected;
 
 	public Server(InetAddress ia, int port) {
 		this.ia = ia;
 		this.port = port;
 	}
 
-	public void connect(String username) {
+	public boolean connect(String username, String password) {
 		try {
 			this.ns = new NetworkServer(new Socket(ia, port));
 			ns.setServer(this);
-			ns.sendPacket(new PacketConnection(this).setUsername(username));
-		} catch (IOException e) {
-			e.printStackTrace();
+			ns.sendPacket(new PacketConnection(this).setUsername(username).setPassword(password));
+			return true;
+		} catch (IOException ex) {
+			return false;
 		}
 	}
 
@@ -42,5 +44,13 @@ public class Server {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public boolean isConnected() {
+		return connected;
+	}
+
+	public void setConnected(boolean connected) {
+		this.connected = connected;
 	}
 }
