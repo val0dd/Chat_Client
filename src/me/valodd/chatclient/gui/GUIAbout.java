@@ -12,6 +12,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 public class GUIAbout extends JDialog {
+	private static final long serialVersionUID = 1L;
 
 	private JPanel contentPanel;
 	private JPanel buttonPanel;
@@ -37,7 +38,7 @@ public class GUIAbout extends JDialog {
 		buttonPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
 
 		// TEXT INFO
-		lblInfo = new JLabel("Created By 0ddlyoko and Valnico");
+		lblInfo = new JLabel("Created By 0ddlyoko");
 
 		// BUTTON OK
 		okButton = new JButton("OK");

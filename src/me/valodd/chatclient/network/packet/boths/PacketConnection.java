@@ -1,5 +1,7 @@
 package me.valodd.chatclient.network.packet.boths;
 
+import me.valodd.chatclient.gui.GUIChatStyle;
+import me.valodd.chatclient.gui.GUIManager;
 import me.valodd.chatclient.network.BufferConnection;
 import me.valodd.chatclient.network.Packet;
 import me.valodd.chatclient.network.packet.PACKETS;
@@ -35,8 +37,8 @@ public class PacketConnection extends Packet {
 			getServer().setName(getUsername());
 			// TODO END HERE
 
-			System.out.println("Number of Clients:" + getNbClients());
-			System.out.println("Clients: " + getClients());
+			GUIManager.getGUIClient().addText("Connected as " + getUsername(), GUIChatStyle.INFO, true);
+			GUIManager.getGUIClient().addText("Users onlines: " + getClients(), GUIChatStyle.INFO, true);
 		}
 
 	}

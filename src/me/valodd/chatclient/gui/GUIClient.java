@@ -29,6 +29,9 @@ import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
 import javax.swing.text.StyledDocument;
 
+import me.valodd.chatclient.network.packet.boths.PacketMessage;
+import me.valodd.chatclient.server.ServerManager;
+
 public class GUIClient extends JFrame implements ActionListener {
 	private static final long serialVersionUID = 1L;
 
@@ -117,8 +120,8 @@ public class GUIClient extends JFrame implements ActionListener {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				sendMessage(txtFldChat.getText());
-				txtFldChat.setText("");
+				if (sendMessage(txtFldChat.getText()))
+					txtFldChat.setText("");
 			}
 		});
 
@@ -273,9 +276,11 @@ public class GUIClient extends JFrame implements ActionListener {
 		return txtpnChat.getText();
 	}
 
-	private void sendMessage(String msg) {
-		addText(msg, GUIChatStyle.SERVER, true);
-		// TODO CHECK IF USER CAN SEND CHAT MESSAGE AND SEND PACKET MESSAGE
+	private boolean sendMessage(String msg) {
+		ServerManager.getActiveServer().getNetworkServer()
+				.sendPacket(new PacketMessage(ServerManager.getActiveServer()).setMessage(msg));
+		return true;
+		// TODO CHECK IF USER CAN SEND CHAT MESSAGE
 	}
 
 	public void addText(String txt, GUIChatStyle style, boolean isNewLine) {

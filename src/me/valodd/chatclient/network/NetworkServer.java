@@ -1,11 +1,11 @@
 package me.valodd.chatclient.network;
 
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 
 import me.valodd.chatclient.network.packet.PACKETS;
 import me.valodd.chatclient.network.packet.boths.PacketConnection;
+import me.valodd.chatclient.network.packet.boths.PacketMessage;
 import me.valodd.chatclient.network.packet.in.PacketUserLogin;
 import me.valodd.chatclient.server.Server;
 
@@ -22,22 +22,24 @@ public class NetworkServer {
 
 	public void sendPacket(Packet packet) {
 		packet.write();
-		_sendPacket(new BufferConnection(packet.getBufferConnection().getSizeBuff() + 4)
-				.writeInt(packet.getBufferConnection().getSizeBuff()).writeBytes(packet.getBufferConnection()));
+		_sendPacket(packet.getBufferConnection());
 	}
 
 	private void _sendPacket(BufferConnection bc) {
 		try {
-			DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
-			dos.write(bc.getAllBytes());
-		} catch (IOException e) {
-			e.printStackTrace();
+			int size = bc.getSizeBuff();
+			socket.getOutputStream().write(size >> 24);
+			socket.getOutputStream().write(size >> 16);
+			socket.getOutputStream().write(size >> 8);
+			socket.getOutputStream().write(size >> 0);
+			socket.getOutputStream().write(bc.getAllBytes());
+		} catch (IOException ex) {
+			ex.printStackTrace();
 		}
 	}
 
 	protected void onPacketReceive(BufferConnection bc) {
-		String str = bc.readString();
-		if ("-VAL0DD-".equalsIgnoreCase(str)) {
+		if ("-VAL0DD-".equalsIgnoreCase(bc.readString())) {
 			int packetID = bc.readInt();
 			PACKETS packetsID = PACKETS.getByID(packetID);
 			Packet packet = null;
@@ -47,6 +49,9 @@ public class NetworkServer {
 				break;
 			case PACKETUSERLOGIN: // PacketUserLogin
 				packet = new PacketUserLogin(s);
+				break;
+			case PACKETMESSAGE: // PacketMessage
+				packet = new PacketMessage(s);
 				break;
 			default:
 				break;
@@ -62,8 +67,8 @@ public class NetworkServer {
 		end = true;
 		try {
 			socket.close();
-		} catch (IOException e) {
-			e.printStackTrace();
+		} catch (IOException ex) {
+			ex.printStackTrace();
 		}
 	}
 
@@ -91,17 +96,10 @@ public class NetworkServer {
 									onPacketReceive(bc);
 								}
 							}).start();
-							/*
-							 * I DON'T KNOW WHY BUT THERE IS 2 MORE BYTES (0x0
-							 * and 0x0) PLEASE SOMEONE EXPLAIN TO ME WHY DOES
-							 * THIS HAPPENED ?
-							 */
-							socket.getInputStream().read();
-							socket.getInputStream().read();
 						}
-					} catch (IOException e) { // DISCONNECTED
+					} catch (IOException ex) { // DISCONNECTED
 						stop();
-						e.printStackTrace();
+						ex.printStackTrace();
 					}
 				}
 			}
