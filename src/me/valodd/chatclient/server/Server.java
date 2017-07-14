@@ -31,7 +31,7 @@ public class Server {
 	}
 
 	public void disconnect() {
-		// ns.disconnect();
+		ns.stop();
 	}
 
 	public NetworkServer getNetworkServer() {

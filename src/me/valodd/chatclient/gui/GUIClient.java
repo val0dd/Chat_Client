@@ -243,9 +243,15 @@ public class GUIClient extends JFrame implements ActionListener {
 		if ("CONNECT".equalsIgnoreCase(action)) {
 			GUIManager.showGUIConnect();
 		} else if ("DISCONNECT".equalsIgnoreCase(action)) {
-			// TODO DISCONNECT
+			if (ServerManager.getActiveServer() != null) {
+				ServerManager.getActiveServer().disconnect();
+				GUIManager.getGUIClient().addText("Disconnected", GUIChatStyle.SERVER, true);
+			}
 		} else if ("QUIT".equalsIgnoreCase(action)) {
-			// TODO DISCONNECT
+			if (ServerManager.getActiveServer() != null) {
+				ServerManager.getActiveServer().disconnect();
+				GUIManager.getGUIClient().addText("Disconnected", GUIChatStyle.SERVER, true);
+			}
 			System.exit(0);
 		} else if ("about".equalsIgnoreCase(action)) {
 			GUIManager.showGUIAbout();
@@ -277,17 +283,19 @@ public class GUIClient extends JFrame implements ActionListener {
 	}
 
 	private boolean sendMessage(String msg) {
-		ServerManager.getActiveServer().getNetworkServer()
-				.sendPacket(new PacketMessage(ServerManager.getActiveServer()).setMessage(msg));
-		return true;
-		// TODO CHECK IF USER CAN SEND CHAT MESSAGE
+		if (ServerManager.getActiveServer() != null) {
+			ServerManager.getActiveServer().getNetworkServer()
+					.sendPacket(new PacketMessage(ServerManager.getActiveServer()).setMessage(msg));
+			return true;
+			// TODO CHECK IF USER CAN SEND CHAT MESSAGE
+		}
+		return false;
 	}
 
 	public void addText(String txt, GUIChatStyle style, boolean isNewLine) {
 		String newLine = isNewLine ? "\n" : "";
 		try {
-			sdChat.insertString(sdChat.getLength(), String.format("%s%s", newLine, txt),
-					sdChat.getStyle(style.getName()));
+			sdChat.insertString(sdChat.getLength(), newLine + txt, sdChat.getStyle(style.getName()));
 		} catch (BadLocationException ex) {
 			ex.printStackTrace();
 		}

@@ -7,7 +7,9 @@ import me.valodd.chatclient.network.packet.PACKETS;
 import me.valodd.chatclient.network.packet.boths.PacketConnection;
 import me.valodd.chatclient.network.packet.boths.PacketMessage;
 import me.valodd.chatclient.network.packet.in.PacketUserLogin;
+import me.valodd.chatclient.network.packet.in.PacketUserLogout;
 import me.valodd.chatclient.server.Server;
+import me.valodd.chatclient.server.ServerManager;
 
 public class NetworkServer {
 	private Server s;
@@ -53,6 +55,9 @@ public class NetworkServer {
 			case PACKETMESSAGE: // PacketMessage
 				packet = new PacketMessage(s);
 				break;
+			case PACKETUSERLOGOUT: // PacketUserLogout
+				packet = new PacketUserLogout(s);
+				break;
 			default:
 				break;
 			}
@@ -64,11 +69,14 @@ public class NetworkServer {
 	}
 
 	public void stop() {
-		end = true;
-		try {
-			socket.close();
-		} catch (IOException ex) {
-			ex.printStackTrace();
+		if (!end) {
+			end = true;
+			try {
+				socket.close();
+			} catch (IOException ex) {
+				ex.printStackTrace();
+			}
+			ServerManager.setActiveServer(null);
 		}
 	}
 
@@ -80,22 +88,26 @@ public class NetworkServer {
 				while (!end) {
 					try {
 						int ch1 = socket.getInputStream().read();
-						int ch2 = socket.getInputStream().read();
-						int ch3 = socket.getInputStream().read();
-						int ch4 = socket.getInputStream().read();
-						int length = (ch1 << 24) + (ch2 << 16) + (ch3 << 8) + (ch4 << 0);
-						if (length > 0) {
-							BufferConnection bc = new BufferConnection(length);
-							byte[] message = new byte[length];
-							socket.getInputStream().read(message, 0, length);
-							bc.writeBytes(message);
-							new Thread(new Runnable() {
+						if (ch1 == -1) {
+							stop();
+						} else {
+							int ch2 = socket.getInputStream().read();
+							int ch3 = socket.getInputStream().read();
+							int ch4 = socket.getInputStream().read();
+							int length = (ch1 << 24) + (ch2 << 16) + (ch3 << 8) + (ch4 << 0);
+							if (length > 0) {
+								BufferConnection bc = new BufferConnection(length);
+								byte[] message = new byte[length];
+								socket.getInputStream().read(message, 0, length);
+								bc.writeBytes(message);
+								new Thread(new Runnable() {
 
-								@Override
-								public void run() {
-									onPacketReceive(bc);
-								}
-							}).start();
+									@Override
+									public void run() {
+										onPacketReceive(bc);
+									}
+								}).start();
+							}
 						}
 					} catch (IOException ex) { // DISCONNECTED
 						stop();

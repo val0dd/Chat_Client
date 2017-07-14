@@ -117,11 +117,8 @@ public class GUIConnection extends JDialog implements ActionListener {
 			String password = txtFldPasswd.getText() == null ? "" : txtFldPasswd.getText();
 			if (srvAddr != null && !"".equalsIgnoreCase(srvAddr) && pseudo != null && !"".equalsIgnoreCase(pseudo)) {
 				if ("CONNECT".equalsIgnoreCase(action)) {
-					if (ServerManager.getActiveServer() != null) {
+					if (ServerManager.getActiveServer() != null)
 						ServerManager.getActiveServer().disconnect();
-						ServerManager.getActiveServer().disconnect();
-						ServerManager.setActiveServer(null);
-					}
 					GUIManager.getGUIClient().addText("Trying to resolve hostname \"" + srvAddr + "\"",
 							GUIChatStyle.INFO, true);
 					new Thread(new Runnable() {
@@ -153,37 +150,30 @@ public class GUIConnection extends JDialog implements ActionListener {
 					}).start();
 				} else if ("INNEWTAB".equalsIgnoreCase(action)) {
 					/*
-					GUIManager.getGUIClient().addText("Trying to resolve hostname \"" + srvAddr + "\"",
-							GUIChatStyle.INFO, true);
-					new Thread(new Runnable() {
-
-						@Override
-						public void run() {
-							try {
-								InetAddress ia = InetAddress.getByName(srvAddr);
-								GUIManager.getGUIClient().addText("Trying to connect to server \"" + srvAddr + "\"",
-										GUIChatStyle.INFO, true);
-								Server srv = new Server(ia, ServerManager.PORT);
-								if (srv.connect(pseudo, password)) {
-									GUIManager.getGUIClient().addText(
-											"Connected, waiting for incoming data. Please wait", GUIChatStyle.INFO,
-											true);
-									ServerManager.addServer(srv);
-									if (ServerManager.getActiveServer() == null)
-										ServerManager.setActiveServer(srv);
-									dispose();
-								} else {
-									GUIManager.getGUIClient().addText("ERROR: Failed to connect to this server",
-											GUIChatStyle.ERROR, true);
-								}
-							} catch (UnknownHostException ex) {
-								GUIManager.getGUIClient().addText(
-										"ERROR: Could not resolve hostname \"" + srvAddr + "\" : " + ex.getMessage(),
-										GUIChatStyle.ERROR, true);
-							}
-						}
-					}).start();
-					*/
+					 * GUIManager.getGUIClient().
+					 * addText("Trying to resolve hostname \"" + srvAddr + "\"",
+					 * GUIChatStyle.INFO, true); new Thread(new Runnable() {
+					 * 
+					 * @Override public void run() { try { InetAddress ia =
+					 * InetAddress.getByName(srvAddr);
+					 * GUIManager.getGUIClient().
+					 * addText("Trying to connect to server \"" + srvAddr +
+					 * "\"", GUIChatStyle.INFO, true); Server srv = new
+					 * Server(ia, ServerManager.PORT); if (srv.connect(pseudo,
+					 * password)) { GUIManager.getGUIClient().addText(
+					 * "Connected, waiting for incoming data. Please wait",
+					 * GUIChatStyle.INFO, true); ServerManager.addServer(srv);
+					 * if (ServerManager.getActiveServer() == null)
+					 * ServerManager.setActiveServer(srv); dispose(); } else {
+					 * GUIManager.getGUIClient().
+					 * addText("ERROR: Failed to connect to this server",
+					 * GUIChatStyle.ERROR, true); } } catch
+					 * (UnknownHostException ex) {
+					 * GUIManager.getGUIClient().addText(
+					 * "ERROR: Could not resolve hostname \"" + srvAddr +
+					 * "\" : " + ex.getMessage(), GUIChatStyle.ERROR, true); } }
+					 * }).start();
+					 */
 				}
 			}
 		} else if ("CANCEL".equalsIgnoreCase(action)) {

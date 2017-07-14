@@ -37,7 +37,7 @@ public class PacketConnection extends Packet {
 			getServer().setName(getUsername());
 			// TODO END HERE
 
-			GUIManager.getGUIClient().addText("Connected as " + getUsername(), GUIChatStyle.INFO, true);
+			GUIManager.getGUIClient().addText("Connected as " + getUsername(), GUIChatStyle.SERVER, true);
 			GUIManager.getGUIClient().addText("Users onlines: " + getClients(), GUIChatStyle.INFO, true);
 		}
 
